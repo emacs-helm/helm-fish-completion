@@ -1,0 +1,20 @@
+#+TITLE: Helm Fish Completion
+
+Helm Fish Completion is a [[Https://emacs-helm.github.io/helm/][Helm]] interface for [[https://gitlab.com/Ambrevar/emacs-fish-completion][Emacs fish-completion]].
+It can be used in both Eshell and =M-x shell=.
+
+[[file:helm-fish-completion.png][./helm-fish-completion.png]]
+
+* Usage
+
+You can invoke Helm Fish completion with the ~helm-fish-completion~ command.
+
+To replace completion in Eshell and =M-x shell=, simply rebind the TAB key:
+
+#+begin_src emacs-lisp
+(when (require 'helm-fish-completion nil 'noerror)
+  (define-key shell-mode-map (kbd "<tab>") 'helm-fish-completion)
+  (add-hook 'eshell-mode-hook 'helm-fish-completion-set-keys))
+#+end_src
+
+~fish-completion-mode~ is not needed.
