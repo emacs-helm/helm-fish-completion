@@ -106,15 +106,13 @@ Fall back on bash with `fish-completion--maybe-use-bash'."
   "Complete `shell' or `eshell' prompt with `fish-completion-complete'.
 If we are in a remote location, use the old completion function instead,
 since we rely on a local fish instance to suggest the completions."
-  (if (file-remote-p default-directory)
-      (funcall fish-completion--old-completion-function)
-    (with-helm-current-buffer
-      (helm-fish-completion-complete (buffer-substring-no-properties
-                                      (save-excursion (if (eq major-mode 'shell-mode)
-                                                          (comint-bol)
-                                                        (eshell-bol))
-                                                      (point))
-                                      (point))))))
+  (with-helm-current-buffer
+    (helm-fish-completion-complete (buffer-substring-no-properties
+                                    (save-excursion (if (eq major-mode 'shell-mode)
+                                                        (comint-bol)
+                                                      (eshell-bol))
+                                                    (point))
+                                    (point)))))
 
 (defun helm-fish-completion-insert (_completion)
   (interactive)
@@ -148,8 +146,11 @@ since we rely on a local fish instance to suggest the completions."
 (defun helm-fish-completion ()
   "Helm interface for fish completion."
   (interactive)
-  (helm :sources 'helm-fish-completion-source
-        :buffer "*helm-fish-completion*"))
+  (if (file-remote-p default-directory)
+      (funcall (or fish-completion--old-completion-function
+                   pcomplete-default-completion-function))
+    (helm :sources 'helm-fish-completion-source
+          :buffer "*helm-fish-completion*")))
 
 ;;;###autoload
 (defun helm-fish-completion-set-keys ()
