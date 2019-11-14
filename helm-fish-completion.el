@@ -54,6 +54,7 @@
   :type 'integer)
 
 (defun helm-fish-completion-toggle-desc ()
+  "Toggle display of description column."
   (interactive)
   (with-helm-alive-p
     (let* ((buf (helm-get-selection))
@@ -115,6 +116,7 @@ since we rely on a local fish instance to suggest the completions."
                                     (point)))))
 
 (defun helm-fish-completion-insert (_completion)
+  "Insert completion(s) at point."
   (interactive)
   (let ((old-point (point)))
     (unless (string-blank-p (string (char-before)))
