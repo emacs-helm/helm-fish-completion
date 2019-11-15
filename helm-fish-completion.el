@@ -116,25 +116,8 @@ since we rely on a local fish instance to suggest the completions."
                                                     (point))
                                     (point)))))
 
-(defun helm-fish-completion-insert (_completion)
-  "Insert completion(s) at point."
-  (interactive)
-  (let ((old-point (point)))
-    (unless (string-blank-p (string (char-before)))
-      ;; When point is on a term, delete the prefix since completion will
-      ;; replace it.
-      (call-interactively 'eshell-backward-argument)
-      (delete-region (point) old-point))
-    (dolist (completion (helm-marked-candidates))
-      (insert completion)
-      (unless (and (file-exists-p completion)
-                   (file-directory-p completion))
-        ;; Don't insert space after file completion since we probably want to
-        ;; chain them.
-        (insert " ")))))
-
 (defcustom helm-fish-completion-actions
-  '(("Insert completion" . helm-fish-completion-insert))
+  '(("Insert completion" . helm-ec-insert))
   "List of actions for `helm-fish-completion'."
   :group 'helm-fish-completion
   :type '(alist :key-type string :value-type function))
