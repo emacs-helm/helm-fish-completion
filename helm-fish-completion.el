@@ -157,6 +157,7 @@ since we rely on a local fish instance to suggest the completions."
 ;;;###autoload
 (defun helm-fish-completion-set-keys ()
   "This function is meant to be called from `eshell-mode-hook'."
+  (require 'esh-mode)                   ; for eshell-mode-map.
   (define-key eshell-mode-map (kbd "<tab>") 'helm-fish-completion))
 
 (provide 'helm-fish-completion)
