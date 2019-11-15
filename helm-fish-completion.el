@@ -42,6 +42,7 @@
 
 (require 'helm)
 (require 'helm-buffers)
+(require 'helm-eshell)
 (require 'fish-completion)
 
 (defgroup helm-fish-completion nil
@@ -142,7 +143,9 @@ since we rely on a local fish instance to suggest the completions."
   (helm-build-sync-source "Completion"
     :candidates #'helm-fish-completion-shell-complete
     :action helm-fish-completion-actions
-    :keymap helm-fish-completion-map))
+    :keymap helm-fish-completion-map
+    :fuzzy-match helm-eshell-fuzzy-match
+    :persistent-action 'ignore))
 
 ;;;###autoload
 (defun helm-fish-completion ()
