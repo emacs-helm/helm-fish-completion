@@ -149,8 +149,7 @@ since we rely on a local fish instance to suggest the completions."
   "Helm interface for fish completion."
   (interactive)
   (if (file-remote-p default-directory)
-      (funcall (or fish-completion--old-completion-function
-                   pcomplete-default-completion-function))
+      (funcall 'helm-esh-pcomplete)
     (helm :sources 'helm-fish-completion-source
           :buffer "*helm-fish-completion*")))
 
