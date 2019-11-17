@@ -6,7 +6,7 @@
 ;; Maintainer: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-helm/helm-fish-completion
 ;; Version: 0.1
-;; Package-Requires: ((emacs "25") (helm "3"))
+;; Package-Requires: ((emacs "25") (helm "3") (fish-completion "1.2"))
 
 ;; This file is not part of GNU Emacs.
 
