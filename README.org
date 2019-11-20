@@ -5,16 +5,23 @@ It can be used in both Eshell and =M-x shell=.
 
 [[file:helm-fish-completion.png][./helm-fish-completion.png]]
 
+* Requirements
+
+- Helm 3.6 (or newer)
+- fish-completion.el
+
 * Usage
 
-You can invoke Helm Fish completion with the ~helm-fish-completion~ command.
+You can invoke Helm Fish completion with the ~helm-fish-completion~ command in
+`M-x shell'.
 
-To replace completion in Eshell and =M-x shell=, simply rebind the TAB key:
+To replace completion in Eshell, set =helm-esh-pcomplete-build-source-fn= to
+=#'helm-fish-completion-make-eshell-source=.
 
 #+begin_src emacs-lisp
 (when (require 'helm-fish-completion nil 'noerror)
   (define-key shell-mode-map (kbd "<tab>") 'helm-fish-completion)
-  (add-hook 'eshell-mode-hook 'helm-fish-completion-set-keys))
+  (setq helm-esh-pcomplete-build-source-fn #'helm-fish-completion-make-eshell-source
 #+end_src
 
-~fish-completion-mode~ is not needed.
+~fish-completion-mode~ must be disabled.
