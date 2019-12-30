@@ -1,4 +1,4 @@
-;;; helm-fish-completion.el --- helm interface for fish completion -*- lexical-binding: t; -*-
+;;; helm-fish-completion.el --- Helm interface for fish completion -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2019 Pierre Neidhardt
 
