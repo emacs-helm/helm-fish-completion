@@ -118,8 +118,21 @@ since we rely on a local fish instance to suggest the completions."
                                                       (point))
                                       (point))))))
 
+(defun helm-fish-completion-insert (candidate)
+  (if (derived-mode-p 'shell-mode)
+      ;; From `helm-lisp-completion-at-point'.
+      (let ((beg (or (car (helm-bounds-of-thing-before-point "[[:space:]]"))
+                     (point)))
+            (end (point)))
+        (with-helm-current-buffer
+          (run-with-timer
+           0.01 nil
+           'helm-insert-completion-at-point
+           beg end (concat (mapconcat #'identity (helm-marked-candidates) " ")))))
+    (helm-ec-insert candidate)))
+
 (defcustom helm-fish-completion-actions
-  '(("Insert completion" . helm-ec-insert))
+  '(("Insert completion" . helm-fish-completion-insert))
   "List of actions for `helm-fish-completion'."
   :group 'helm-fish-completion
   :type '(alist :key-type string :value-type function))
