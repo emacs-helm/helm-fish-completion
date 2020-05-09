@@ -85,24 +85,27 @@
 (defun helm-fish-completion-complete (raw-prompt)
   "Complete RAW-PROMPT (any string) using the fish shell.
 Fall back on bash with `fish-completion--maybe-use-bash'."
-  (let* ((comp-list-with-desc (fish-completion--list-completions-with-desc raw-prompt))
-         (comp-list (mapcar (lambda (e)
-                              (car (split-string e "\t")))
-                            (split-string comp-list-with-desc "\n" t)))
+  (let* ((comp-list-with-desc
+          (cl-delete-duplicates
+           (mapcar (lambda (e)
+                     (split-string e "\t"))
+                   (split-string
+                    (fish-completion--list-completions-with-desc raw-prompt)
+                    "\n" t))
+           :test #'equal))
+         (comp-list (mapcar #'first comp-list-with-desc))
          (bash-list (fish-completion--maybe-use-bash comp-list)))
     (if (eq comp-list bash-list)
-        (mapcar (lambda (e)
-                  (let ((pair (split-string e "\t")))
-                    (unless (cadr pair)
-                      (setcdr pair '("")))
-                    (cons (format (concat "%-" (number-to-string helm-fish-completion-length) "s  %s")
-                                  (car pair)
-                                  (if helm-buffer-details-flag
-                                      (propertize (cadr pair) 'face 'helm-buffer-process)
-                                    ""))
-                          (car pair))))
-                (split-string
-                 comp-list-with-desc "\n" t))
+        (mapcar (lambda (pair)
+                  (unless (cadr pair)
+                    (setcdr pair '("")))
+                  (cons (format (concat "%-" (number-to-string helm-fish-completion-length) "s  %s")
+                                (first pair)
+                                (if helm-buffer-details-flag
+                                    (propertize (cadr pair) 'face 'helm-buffer-process)
+                                  ""))
+                        (first pair)))
+                comp-list-with-desc)
       comp-list)))
 
 (defun helm-fish-completion-shell-complete ()
