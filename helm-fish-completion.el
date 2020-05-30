@@ -131,7 +131,11 @@ since we rely on a local fish instance to suggest the completions."
           (run-with-timer
            0.01 nil
            'helm-insert-completion-at-point
-           beg end (concat (mapconcat #'identity (helm-marked-candidates) " ")))))
+           beg end (concat (mapconcat (lambda (candidate)
+                                        (if (file-exists-p candidate)
+                                            (comint-quote-filename candidate)
+                                          candidate))
+                                      (helm-marked-candidates) " ")))))
     (helm-ec-insert candidate)))
 
 (defcustom helm-fish-completion-actions
