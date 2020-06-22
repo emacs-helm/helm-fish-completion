@@ -158,8 +158,11 @@ since we rely on a local fish instance to suggest the completions."
 This is mostly useful for `M-x shell'.
 For Eshell, see `helm-fish-completion-make-eshell-source'."
   (interactive)
-  (helm :sources 'helm-fish-completion-source
-        :buffer "*helm-fish-completion*"))
+  (apply #'helm
+         :sources 'helm-fish-completion-source
+         :buffer "*helm-fish-completion*"
+         (when (eq major-mode 'shell-mode)
+           `(:input ,(substring-no-properties (or (thing-at-point 'symbol) ""))))))
 
 ;;;###autoload
 (defun helm-fish-completion-make-eshell-source ()
