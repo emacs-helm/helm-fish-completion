@@ -122,7 +122,7 @@ since we rely on a local fish instance to suggest the completions."
                                       (point))))))
 
 (defun helm-fish-completion-insert (candidate)
-  (if (derived-mode-p 'shell-mode)
+  (if (derived-mode-p 'shell-mode 'eshell-mode)
       ;; From `helm-lisp-completion-at-point'.
       (let ((beg (or (car (helm-bounds-of-thing-before-point "[[:space:]]"))
                      (point)))
